@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        textarea {
+            width: 500px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+
+<textarea id="mainbox"></textarea>
+<br><br>
+<button id="btnPush">pushState</button>
+<button id="btnReplace">replaceState</button>
+<button id="btnLength">length</button>
+<button id="btnState">state</button>
+
+<script>
+    var cnt = 1;
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function appendText(text) {
+        $('mainbox').value = $('mainbox').value+"\n"+text;
+    }
+
+    function getLocalurl(hash) {
+        return window.location.href.split('#')[0]+'#'+hash;
+    }
+
+    window.onload = function(e) {
+        appendText("History length: "+window.history.length);
+        appendText("History state: "+window.history.state);
+        appendText("Support pushState? "+(window.history.pushState ? "true" : "false"));
+        appendText("Support replaceState? "+(window.history.replaceState ? "true" : "false"));
+
+    }
+
+    $('btnPush').addEventListener('click', function(e) {
+        window.history.pushState('data'+cnt, 'ok'+cnt, getLocalurl('ok'+cnt));
+        cnt++;
+        appendText("History length: "+window.history.length);
+    });
+
+    $('btnReplace').addEventListener('click', function(e) {
+        window.history.replaceState('dataPlus'+cnt, 'ok'+cnt, getLocalurl('ok'+cnt));
+        cnt++;
+        appendText("History length: "+window.history.length);
+    });
+
+    $('btnLength').addEventListener('click', function(e) {
+        appendText("History length: "+window.history.length);
+    });
+
+    $('btnState').addEventListener('click', function(e) {
+        appendText("History state: "+window.history.state);
+    });
+
+    window.addEventListener("popstate", function() {
+        appendText('on popstate');
+        appendText("History state: "+window.history.state);
+        appendText("History length: "+window.history.length);
+    });
+</script>
+</body>
+</html>
